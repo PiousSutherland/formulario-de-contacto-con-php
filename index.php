@@ -19,15 +19,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    $name = $_POST['fname'];
    $email = $_POST['email'];
    $message = $_POST['message'];
-   $to = "your-email@example.com";
-   $subject = "Nuevo mensaje de contacto";
-   $body = "Nombre: $name\nCorreo electrónico: $email\nMensaje:\n$message";
-   $headers = "From: $email";
-   if(mail($to, $subject, $body, $headers)){
-       echo "Mensaje enviado exitosamente";
-   } else{
-       echo "Error al enviar el mensaje";
-   }
+
+    if(isset($name) && isset($email) && isset($message))
+    {
+        $to = "your-email@example.com";
+        $subject = "Nuevo mensaje de contacto";
+        $body = "Nombre: $name\nCorreo electrónico: $email\nMensaje: $message";
+        $headers = "From: $email";
+
+        if(mail($to, $subject, $body, $headers)){
+            echo "Mensaje enviado exitosamente";
+        } else{
+            echo "Error al enviar el mensaje";
+        }
+    }
+    else
+        echo("<script>alert('Por favor rellena todos los campos')</script>");
 }
 ?>
 
