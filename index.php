@@ -16,12 +16,16 @@
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   $name = $_POST['fname'];
-   $email = $_POST['email'];
-   $message = $_POST['message'];
+    // Sanitize
+    $name = filter_input(INPUT_POST, 'fname', FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    if(isset($name) && isset($email) && isset($message))
-    {
+    if(empty($name) || empty($email) || empty($message))
+        echo("<script>alert('Por favor rellena todos los campos')</script>");
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL))
+        echo "<script>alert('Por favor introduce un correo electrónico válido')</script>";
+    else{
         $to = "your-email@example.com";
         $subject = "Nuevo mensaje de contacto";
         $body = "Nombre: $name\nCorreo electrónico: $email\nMensaje: $message";
@@ -33,8 +37,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Error al enviar el mensaje";
         }
     }
-    else
-        echo("<script>alert('Por favor rellena todos los campos')</script>");
 }
 ?>
 
